@@ -5,6 +5,9 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      'nova': ['Proxima Nova', 'sans-serif']
+    },
     extend: {},
   },
   plugins: [],

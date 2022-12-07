@@ -1,24 +1,69 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Hero from './components/Hero'
+import { CustomSelector } from './components/CustomSelector';
+import React, { useEffect, useState } from 'react';
+import { Listbox } from '@headlessui/react';
 
-import React, { useState } from 'react';
+interface Gender {
+  label: string
+  value: string
+}
+
+interface Relation {
+  label: string
+  value: string
+}
+
+const genderOptions = [
+  { label: 'default', value: "Set Gender"},
+  { label: 'female', value: 'Female' },
+  { label: 'male', value:  'Male'},
+  { label: 'Non-Binary', value:  'Non-Binary'},
+]
+
+const relationOptions = [
+  { label: 'default', value: "Set Relationship"},
+  { label: 'sister', value: 'Sister' },
+  { label: 'brother', value:  'Brother'},
+  { label: 'father', value:  'Father'},
+  { label: 'mother', value:  'Mother'},
+  { label: 'friend', value:  'Friend'},
+  { label: 'partner', value:  'Partner'},
+  { label: 'finance', value:  'Finance'},
+  { label: 'wife', value:  'Wife'},
+  { label: 'husband', value:  'Husband'},
+  { label: 'neighbor', value:  'Neighbor'},
+]
 
 const Home: React.FC = () => {
   const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('');
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState<Gender>(genderOptions[0]);
+  const [relation, setRelation] = useState<Relation>(relationOptions[0]);
+  const [pronoun, setPronoun] = useState('');
+  const [experience1, setExperience1] = useState('');
+  const [experience2, setExperience2] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const callGenerateEndpoint = async () => {
     setIsGenerating(true);
-    
+
     console.log("Calling OpenAI...")
     const response = await fetch('/api/generate', {
-      method: 'POST',
+      method: 'POST', 
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userInput }),
+      body: JSON.stringify({ 
+        userInput, 
+        gender: gender.value, 
+        pronoun, 
+        relation: relation.value,
+        experience1,
+        experience2,
+        name,
+      }),
     });
 
     const data = await response.json();
@@ -28,27 +73,78 @@ const Home: React.FC = () => {
     setApiOutput(`${output.text}`);
     setIsGenerating(false);
   }
-  const onUserChangedText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onUserChangedExperience = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     console.log(event.target.value);
-    setUserInput(event.target.value);
+    setExperience1(event.target.value);
   };
-  
+
+  const onUserChangedExperience2 = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(event.target.value);
+    setExperience2(event.target.value);
+  };
+
+  const onUserOutputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setApiOutput(event.target.value);
+  };
+
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }
+
+  useEffect(() => {
+    switch(gender.value) {
+      case "Male":
+        setPronoun('his')
+        break;
+      case "Female":
+        setPronoun('her')
+        break;
+      case "Non-binary":
+        setPronoun("their")
+        break;
+      default:
+        setPronoun("their")
+    }
+  }, [gender])
+
   return (
-    <div className="bg-gray-500 w-full container mx-auto">
+    <div className="bg-gray-500 w-full container mx-auto py-4">
       <div className="header">
-        <div className="header-title ">
-            <h1>Card Generator</h1>
+        <div className="header-title text-center">
+            <h1 className='text-4xl'>Card Generator</h1>
           </div>
-          <div className="header-subtitle">
-            <h2>Create the Perfect Card</h2>
+          <div className="text-center">
+            <h2 className="text-2xl">Create the Perfect Card</h2>
+          </div>
+          <div className='flex gap-4'>
+            <div>
+              <CustomSelector gender={gender} onChange={setGender} options={genderOptions} label="genderSelector"/>          
+            </div>
+            <div>
+              <CustomSelector gender={relation} onChange={setRelation} options={relationOptions} label="relationSelector"/>          
+            </div>
+            <div>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+              type="text" 
+              placeholder="Recipient Name" 
+              value={name}
+              onChange={onNameChange}
+              />
+            </div>
           </div>
           <div>
-          <div className="prompt-container">
-            <textarea
-              className="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-              placeholder="start typing here"
-              value={userInput}
-              onChange={onUserChangedText}
+          <div className="prompt-container py-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Your First Experience</label>
+            <textarea id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="Write your thoughts here..."
+            value={experience1}
+            onChange={onUserChangedExperience}
+            />
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Your Second Experience</label>
+            <textarea id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="Write your thoughts here..."
+            value={experience2}
+            onChange={onUserChangedExperience2}
             />
             <div className="prompt-buttons">
             <a className="generate-button" onClick={callGenerateEndpoint}>
@@ -58,14 +154,15 @@ const Home: React.FC = () => {
             </a>
             </div>
             {apiOutput && (
-              <div className="output">
-                <div className="output-header-container">
-                  <div className="output-header">
-                    <h3>Output</h3>
-                  </div>
-                </div>
+              <div className="w-full container mx-auto py-4">
                 <div className="output-content">
-                  <p>{apiOutput}</p>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Output</label>
+                  <textarea
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={apiOutput}
+                  onChange={onUserOutputChange}
+                  rows={10}
+                  />
                 </div>
               </div>
             )}          
