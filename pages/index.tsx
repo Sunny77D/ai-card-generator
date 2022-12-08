@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import Image from 'next/image'
 import { CustomSelector } from './components/CustomSelector';
+import Hero from './components/Hero';
 import React, { useEffect, useState } from 'react';
 import { Listbox } from '@headlessui/react';
 
@@ -15,14 +15,12 @@ interface Relation {
 }
 
 const genderOptions = [
-  { label: 'default', value: "Set Gender"},
   { label: 'female', value: 'Female' },
   { label: 'male', value:  'Male'},
   { label: 'Non-Binary', value:  'Non-Binary'},
 ]
 
 const relationOptions = [
-  { label: 'default', value: "Set Relationship"},
   { label: 'sister', value: 'Sister' },
   { label: 'brother', value:  'Brother'},
   { label: 'father', value:  'Father'},
@@ -36,7 +34,6 @@ const relationOptions = [
 ]
 
 const Home: React.FC = () => {
-  const [userInput, setUserInput] = useState('');
   const [apiOutput, setApiOutput] = useState('');
   const [name, setName] = useState('');
   const [gender, setGender] = useState<Gender>(genderOptions[0]);
@@ -56,7 +53,6 @@ const Home: React.FC = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        userInput, 
         gender: gender.value, 
         pronoun, 
         relation: relation.value,
@@ -109,65 +105,58 @@ const Home: React.FC = () => {
 
   return (
     <div className="bg-gray-500 w-full container mx-auto py-4">
-      <div className="header">
-        <div className="header-title text-center">
-            <h1 className='text-4xl'>Card Generator</h1>
-          </div>
-          <div className="text-center">
-            <h2 className="text-2xl">Create the Perfect Card</h2>
-          </div>
-          <div className='flex gap-4'>
-            <div>
-              <CustomSelector gender={gender} onChange={setGender} options={genderOptions} label="genderSelector"/>          
-            </div>
-            <div>
-              <CustomSelector gender={relation} onChange={setRelation} options={relationOptions} label="relationSelector"/>          
-            </div>
-            <div>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              type="text" 
-              placeholder="Recipient Name" 
-              value={name}
-              onChange={onNameChange}
-              />
-            </div>
-          </div>
+        <Hero />
+        <div className='flex gap-4 items-end justify-center py-4 px-4'>
+          <CustomSelector gender={gender} onChange={setGender} options={genderOptions} label="Select Recipient Gender"/>          
+          <CustomSelector gender={relation} onChange={setRelation} options={relationOptions} label="Relation to Recipient"/>          
           <div>
-          <div className="prompt-container py-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Your First Experience</label>
-            <textarea id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Write your thoughts here..."
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline" 
+            type="text" 
+            placeholder="Recipient Name" 
+            value={name}
+            onChange={onNameChange}
+            />
+          </div>
+        </div>
+        <div>
+        <div className="prompt-container py-4 px-4 gap-4 flex inline justify-center">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
+            <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="my trip to London, England"
             value={experience1}
             onChange={onUserChangedExperience}
             />
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Your Second Experience</label>
-            <textarea id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Write your thoughts here..."
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
+            <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="late night zoom calls during covid"
             value={experience2}
             onChange={onUserChangedExperience2}
-            />
-            <div className="prompt-buttons">
+            />   
+          </div>
+        </div>
+        <div className="prompt-buttons">
             <a className="generate-button" onClick={callGenerateEndpoint}>
                 <div className="flex justify-center items-center">
                   {isGenerating ? <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-purple-500" role="status"></div> : <p>Generate</p>}
                 </div>
             </a>
-            </div>
-            {apiOutput && (
-              <div className="w-full container mx-auto py-4">
-                <div className="output-content">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Output</label>
-                  <textarea
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={apiOutput}
-                  onChange={onUserOutputChange}
-                  rows={10}
-                  />
-                </div>
-              </div>
-            )}          
           </div>
-        </div>
+          {apiOutput && (
+            <div className="w-full container mx-auto py-4">
+              <div className="output-content">
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Output</label>
+                <textarea
+                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={apiOutput}
+                onChange={onUserOutputChange}
+                rows={10}
+                />
+              </div>
+            </div>
+          )}  
       </div>
     </div>
   )

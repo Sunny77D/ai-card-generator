@@ -6,7 +6,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'nova': ['Proxima Nova', 'sans-serif']
+      lobster: ["Lobster", "cursive"],
     },
     extend: {},
   },
