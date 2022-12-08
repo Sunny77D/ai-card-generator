@@ -104,7 +104,7 @@ const Home: React.FC = () => {
   }, [gender])
 
   return (
-    <div className="bg-gray-500 w-full container mx-auto py-4">
+    <div className="bg-gray-500 w-full h-screen container mx-auto py-4">
         <Hero />
         <div className='flex gap-4 items-end justify-center py-4 px-4'>
           <CustomSelector gender={gender} onChange={setGender} options={genderOptions} label="Select Recipient Gender"/>          
@@ -119,18 +119,22 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div>
-        <div className="prompt-container py-4 px-4 gap-4 flex inline justify-center">
+        <div className="prompt-container py-4 px-2 gap-4 flex inline justify-center">
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
-            <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            <label className="block mb-2 text-md font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
+            <textarea 
+            rows={2} 
+            className="block p-2.5 w-full lg:w-96 text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
             placeholder="my trip to London, England"
             value={experience1}
             onChange={onUserChangedExperience}
             />
           </div>
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
-            <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            <label className="block mb-2 text-md font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
+            <textarea 
+            rows={2} 
+            className="block p-2.5 w-full lg:w-96 text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
             placeholder="late night zoom calls during covid"
             value={experience2}
             onChange={onUserChangedExperience2}
