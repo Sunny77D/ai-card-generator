@@ -67,5 +67,3 @@ const CustomSelector: React.FunctionComponent<CustomSelectorProps> = ({curOption
     );
 }
 export default CustomSelector;
-
-export default CustomSelector;
