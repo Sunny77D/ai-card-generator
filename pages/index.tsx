@@ -1,4 +1,5 @@
-import Image from 'next/image'
+import Image from 'next/image';
+import Router from 'next/router';
 import CustomSelector from '../components/CustomSelector';
 import Hero from '../components/Hero';
 import React, { useEffect, useState } from 'react';
@@ -103,6 +104,16 @@ const Home: React.FC = () => {
     }
   }, [gender])
 
+  function sendProps() {
+    Router.push({
+      pathname: "/generateCard",
+      query: {
+        name,
+        apiOutput
+      }
+    })
+  }
+
   return (
     <div>
         <Image 
@@ -144,14 +155,21 @@ const Home: React.FC = () => {
             </button>
           </div>
           {apiOutput && (
-            <div className="w-full p-4 container mx-auto py-4">  
+            <div className="relative w-full p-4 container mx-auto py-4 align-right">  
               <label className="font-lobster block mb-2 text-xl font-medium text-gray-900 dark:text-white py-2">Your Christmas Card</label>
-                <textarea
-                className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={apiOutput}
-                onChange={onUserOutputChange}
-                rows={10}
-                />
+              <textarea
+              className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={apiOutput}
+              onChange={onUserOutputChange}
+              rows={10}
+              />
+              <div className='py-4'>
+                <button
+                className='bg-red-500 flex inline rounded-md p-2 items-center absolute bottom-0 right-4'
+                onClick={sendProps}>
+                  Make Into Card
+                </button>
+              </div>
             </div>
           )}  
       </div>
