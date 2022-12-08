@@ -9,7 +9,7 @@ interface CustomSelectorProps {
     label: string
 }
 
-export const CustomSelector: React.FunctionComponent<CustomSelectorProps> = props => {
+const CustomSelector: React.FunctionComponent<CustomSelectorProps> = props => {
     return(
         <div>
         <Listbox value={props.gender} onChange={props.onChange}>
@@ -67,3 +67,4 @@ export const CustomSelector: React.FunctionComponent<CustomSelectorProps> = prop
     );
 };
 
+export default CustomSelector;

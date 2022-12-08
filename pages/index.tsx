@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { CustomSelector } from './components/CustomSelector';
+import CustomSelector from './components/CustomSelector';
 import Hero from './components/Hero';
 import React, { useEffect, useState } from 'react';
 import { Listbox } from '@headlessui/react';
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div>
-        <div className="prompt-container py-4 px-2 gap-4 flex inline justify-center">
+        <div className="prompt-container py-4 px-2  gap-4 flex inline justify-center">
           <div>
             <label className="block mb-2 text-md font-medium text-gray-900 dark:text-white py-2">Experience to include</label>
             <textarea 
