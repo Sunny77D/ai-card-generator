@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import CustomSelector from './components/CustomSelector';
-import Hero from './components/Hero';
+import CustomSelector from '../components/CustomSelector';
+import Hero from '../components/Hero';
 import React, { useEffect, useState } from 'react';
 import { Listbox } from '@headlessui/react';
 
@@ -107,8 +107,8 @@ const Home: React.FC = () => {
     <div className="bg-gray-500 w-full h-screen container mx-auto py-4">
         <Hero />
         <div className='flex gap-4 items-end justify-center py-4 px-4'>
-          <CustomSelector gender={gender} onChange={setGender} options={genderOptions} label="Select Recipient Gender"/>          
-          <CustomSelector gender={relation} onChange={setRelation} options={relationOptions} label="Relation to Recipient"/>          
+          <CustomSelector curOption={gender} onChange={setGender} options={genderOptions} label="Select Recipient Gender"/>          
+          <CustomSelector curOption={relation} onChange={setRelation} options={relationOptions} label="Relation to Recipient"/>          
           <div>
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline" 
             type="text" 
