@@ -8,12 +8,8 @@ interface CustomSelectorProps {
     options: {label: string, value: string}[]
     label: string
 }
-<<<<<<< HEAD:pages/components/CustomSelector.tsx
-const CustomSelector: React.FunctionComponent<CustomSelectorProps> = props => {
-=======
 
 const CustomSelector: React.FunctionComponent<CustomSelectorProps> = ({curOption, onChange, options, label}) => {
->>>>>>> main:components/CustomSelector.tsx
     return(
         <div>
         <Listbox value={curOption} onChange={onChange}>
