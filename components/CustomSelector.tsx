@@ -65,6 +65,5 @@ const CustomSelector: React.FunctionComponent<CustomSelectorProps> = ({curOption
         </Listbox>
         </div>
     );
-};
-
+}
 export default CustomSelector;

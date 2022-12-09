@@ -43,6 +43,9 @@ const Home: React.FC = () => {
   const [experience1, setExperience1] = useState('');
   const [experience2, setExperience2] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [res, setResponse] = useState<Record<string, unknown> | null>(
+    null,
+  );
 
   const callGenerateEndpoint = async () => {
     setIsGenerating(true);
@@ -62,6 +65,29 @@ const Home: React.FC = () => {
         name,
       }),
     });
+
+    if (response.ok) {
+      setResponse({
+        status: response.status,
+        body: await response.json(),
+        headers: {
+          "X-Ratelimit-Limit": response.headers.get("X-Ratelimit-Limit"),
+          "X-Ratelimit-Remaining": response.headers.get("X-Ratelimit-Remaining"),
+          "X-Ratelimit-Reset": response.headers.get("X-Ratelimit-Reset"),
+        },
+      });
+    } else {
+      console.log(JSON.stringify(response.headers, null, 2));
+      setResponse(null);
+
+      alert(
+        `Ratelimit reached, try again after ${
+          new Date(
+            parseInt(response.headers.get("X-RateLimit-Reset")!),
+          ).toLocaleString()
+        }`,
+      );
+    }
 
     const data = await response.json();
     const { output } = data;
